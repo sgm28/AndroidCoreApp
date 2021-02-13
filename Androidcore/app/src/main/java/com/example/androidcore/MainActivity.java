@@ -1,6 +1,8 @@
 package com.example.androidcore;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,12 +19,19 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private CoordinatorLayout coordinatorLayout;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.snackbar_layout);
 
+        coordinatorLayout = findViewById(R.id.coordinator);
+        toolbar = findViewById(R.id.toolbar);
 
+
+////////////////////////////////////////////////////////////////////
         //Displaying a Toast Message
         //Toast - A single feedback about an operation
 //        Context context = getApplicationContext();
@@ -37,25 +46,38 @@ public class MainActivity extends AppCompatActivity {
 
         //Custom Layout
         //LayoutInflater  is like the hot air use to blow up a balloon.
-        LayoutInflater inflater = getLayoutInflater();
+ //       LayoutInflater inflater = getLayoutInflater();
 
         //Blowing up the balloon. The balloon is the view layout
         //first parameter is the layout
         //second parameter is the root view
-        View layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.custom_toast_container));
-
-        TextView text = layout.findViewById(R.id.text);
-        text.setText("This is a custom toast");
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER, 0,0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
+//        View layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.custom_toast_container));
+//
+//        TextView text = layout.findViewById(R.id.text);
+//        text.setText("This is a custom toast");
+//
+//        Toast toast = new Toast(getApplicationContext());
+//        toast.setGravity(Gravity.CENTER, 0,0);
+//        toast.setDuration(Toast.LENGTH_LONG);
+//        toast.setView(layout);
+//        toast.show();
+/////////////////////////////////////////////////////////////////////////
 
         //Snackbar setup - lightweight feedback about an operation
         Snackbar snackbar;
-        snackbar = Snackbar.make(findViewById(R.id.coordinator), "I am a snackbar", Snackbar.LENGTH_LONG);
+
+
+    }
+
+    public void simplySnackbar(View view)
+    {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "This is Simple Snackbar", Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
+    public void snackbarWithAction(View view)
+    {
+         Snackbar  snackbar= Snackbar.make(coordinatorLayout, "Snackbar with actions", Snackbar.LENGTH_SHORT);
 
 
         snackbar.setAction("UNDO", new View.OnClickListener() {
@@ -65,8 +87,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        snackbar.setActionTextColor(Color.BLUE);
-        snackbar.show();
 
     }
+
+    public void customSnackbar(View view)
+    {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Custom Snackbar", Snackbar.LENGTH_SHORT);
+        snackbar.setAction("UNDO", new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Undo action", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        snackbar.setActionTextColor(Color.BLUE);
+
+        View snackbarView = snackbar.getView();
+        TextView snackbarText = snackbarView.findViewById(R.id.snackbar_text);
+        snackbarText.setTextColor(Color.YELLOW);
+        snackbar.show();
+    }
+
+
 }
