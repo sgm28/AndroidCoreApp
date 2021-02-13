@@ -3,6 +3,7 @@ package com.example.androidcore;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.snackbar_layout);
 
 
         //Displaying a Toast Message
@@ -48,5 +52,21 @@ public class MainActivity extends AppCompatActivity {
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
+
+        //Snackbar setup - lightweight feedback about an operation
+        Snackbar snackbar;
+        snackbar = Snackbar.make(findViewById(R.id.coordinator), "I am a snackbar", Snackbar.LENGTH_LONG);
+
+
+        snackbar.setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Undo action", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        snackbar.setActionTextColor(Color.BLUE);
+        snackbar.show();
+
     }
 }
