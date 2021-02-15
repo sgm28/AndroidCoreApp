@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.snackbar_layout);
 
         coordinatorLayout = findViewById(R.id.coordinator);
-        toolbar = findViewById(R.id.toolbar);
+
 
 
 ////////////////////////////////////////////////////////////////////
@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 /////////////////////////////////////////////////////////////////////////
 
         //Snackbar setup - lightweight feedback about an operation
+        //The following code came from https://medium.com/android-beginners/android-snackbar-example-tutorial-a40aae0fc620
+        //with slight modification.
         Snackbar snackbar;
 
 
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Undo action", Toast.LENGTH_SHORT).show();
             }
         });
-
+        snackbar.show();
 
     }
 
@@ -103,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         snackbar.setActionTextColor(Color.BLUE);
 
         View snackbarView = snackbar.getView();
+        //snackbar_text is special id associated with a snackbar
         TextView snackbarText = snackbarView.findViewById(R.id.snackbar_text);
         snackbarText.setTextColor(Color.YELLOW);
         snackbar.show();
