@@ -73,19 +73,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void simplySnackbar(View view)
     {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, "This is Simple Snackbar", Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.simpleSnackBarMessage, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
 
     public void snackbarWithAction(View view)
     {
-         Snackbar  snackbar= Snackbar.make(coordinatorLayout, "Snackbar with actions", Snackbar.LENGTH_SHORT);
+         Snackbar  snackbar= Snackbar.make(coordinatorLayout, R.string.SnackbarWithActionsMessage, Snackbar.LENGTH_SHORT);
 
 
         snackbar.setAction("UNDO", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Undo action", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.UndoActionMessage, Toast.LENGTH_SHORT).show();
             }
         });
         snackbar.show();
@@ -94,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void customSnackbar(View view)
     {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Custom Snackbar", Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.CustomSnackbarMessage, Snackbar.LENGTH_SHORT);
         snackbar.setAction("UNDO", new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Undo action", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.UndoActionMessage, Toast.LENGTH_SHORT).show();
 
             }
         });

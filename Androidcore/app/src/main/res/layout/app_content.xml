@@ -10,20 +10,20 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Simple Snackbar"
+        android:text="@string/simple_snackbar"
         android:onClick="simplySnackbar"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="snackbarWithAction"
-        android:text="Snackbar with Action"/>
+        android:text="@string/snackbar_with_action"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="customSnackbar"
-        android:text="Custom Snackbar"/>
+        android:text="@string/custom_snackbar"/>
 
 
 
