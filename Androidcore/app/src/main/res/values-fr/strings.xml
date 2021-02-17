@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="floating_button" translatable="false">" bouton flottant"</string>
+    <string name="simple_snackbar">" Snackbar simple"</string>
+    <string name="snackbar_with_action">" Snackbar avec action"</string>
+    <string name="custom_snackbar">" Snackbar personnalisé"</string>
+    <string name="simpleSnackBarMessage">" C'est Simple Snackbar"</string>
+    <string name="SnackbarWithActionsMessage">" Snackbar avec action"</string>
+    <string name="UndoActionMessage">" Annuler l'action"</string>
+    <string name="CustomSnackbarMessage">Snackbar personnalisé</string>
+</resources>
