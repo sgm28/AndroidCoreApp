@@ -3,7 +3,10 @@ package com.example.androidcore;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Notification;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -68,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         //with slight modification.
         Snackbar snackbar;
 
+        //Calling the notification function
+        notification();
 
     }
 
@@ -110,6 +115,23 @@ public class MainActivity extends AppCompatActivity {
         snackbarText.setTextColor(Color.YELLOW);
         snackbar.show();
     }
+
+
+    //Notification function
+    public void notification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "1")
+                .setSmallIcon(R.drawable.droid)
+                .setContentTitle("first notification")
+                .setContentText("This is the body.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
+
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, builder.build());
+    }
+
+
 
 
 }
