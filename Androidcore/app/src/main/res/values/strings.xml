@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name" translatable="false">Android core</string>
+    What is this string for? When and where is it presented to the user?
+    Where is this in the layout? For example, translations are less flexible in buttons than in text boxes.
+
+    <!-- floating_button is use to describe what the floating button looks like.
+         the text is presented to user when the user uses a screen reader.
+         The floating button is in the button right in the snackbar_layout.xml -->
+    <string name="floating_button">floating button</string>
+
+
+
+    <!-- What: The name of the button, When: the app is loaded, Where: The top of the screen in app_content.xml -->
+    <string name="simple_snackbar">Simple Snackbar</string>
+
+    <!-- What: The name of the  second button, When: the app is loaded, Where: The middle of the screen in app_content.xml -->
+    <string name="snackbar_with_action">Snackbar with Action</string>
+
+    <!-- What: The name of the  third button, When: the app is loaded, Where: The bottom of the screen in app_content.xml -->
+    <string name="custom_snackbar">Custom Snackbar</string>
+
+    <!-- What: The message to display, When: the first button is click, Where: The bottom  of the screen in MainActivity.java -->
+    <string name="simpleSnackBarMessage">This is Simple Snackbar</string>
+    <!-- What: The message to display, When: the second button is click, Where: The bottom  of the screen in MainActivity.java -->
+    <string name="SnackbarWithActionsMessage">Snackbar with actions</string>
+
+    <!-- What: The message to display for the button, When: the user click on second or third button , Where: The bottom  of the screen in MainActivity.java -->
+    <string name="UndoActionMessage">Undo action</string>
+
+    <!-- What: The message to display, When: the third button is click, Where: The bottom  of the screen in MainActivity.java -->
+    <string name="CustomSnackbarMessage">Custom Snackbar</string>
+
+</resources>
