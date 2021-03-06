@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     //Fields
 
     private Button button_notify;
+
     //Every notification channel must be associated with an ID that is unique within your package
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
 
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public void sendNotification() {
 
         NotificationCompat.Builder builder = getNotificationBuilder();
-        mNotifyManager.notify(NOTIFICATION_ID, builder.build()); //STOP HERE
+        mNotifyManager.notify(NOTIFICATION_ID, builder.build());
 
     }
 
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("Notificaiton from Mascot");
+            notificationChannel.setDescription("Notification from Mascot");
             mNotifyManager.createNotificationChannel(notificationChannel);
         }
 
@@ -57,7 +58,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private NotificationCompat.Builder getNotificationBuilder(){
+
+        //Notification Intent to open up this app if it is close.
         Intent notificationIntent = new Intent(this, MainActivity.class);
+
+
+       //PendingIntent will execute the notificationIntent code
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(this,NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
@@ -65,9 +71,14 @@ public class MainActivity extends AppCompatActivity {
         notifyBuilder.setContentTitle("You've been notified!");
         notifyBuilder.setContentText("This is your notification text.");
         notifyBuilder.setSmallIcon(R.drawable.ic_android);
-
+                                                                    //Cancel the notification when the users clicks on it
         notifyBuilder.setContentIntent(notificationPendingIntent).setAutoCancel(true);
 
+
+            //1.5 Add priority and defaults to your notification for backward compatibility
+            // require fro Android 7.1 and lower
+            notifyBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+            notifyBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
 
         return notifyBuilder;
     }
