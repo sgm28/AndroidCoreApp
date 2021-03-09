@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -19,10 +20,30 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Task 3 implementing an action button
+    //action button are the actions you can when responding to a notification
+    //i.e, replying to a text message without opening the app
+    //action button requires:
+    /*
+        An icon,
+        A label string
+        A pendingIntent
+     */
+    public class NotificationReceiver extends BroadcastReceiver {
+        public NotificationReceiver() {
 
+        }
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateNotification();
+        }
+    }
 
+    //Task 3
+    private static final String ACTION_UPDATE_NOTIFICATION = "com.example.android.notifyme.ACTION_UPDATE_NOTIFICATION";
 
+    NotificationReceiver mReceiver = new NotificationReceiver();
 
 
     //Fields
@@ -46,9 +67,19 @@ public class MainActivity extends AppCompatActivity {
     //Methods
     public void sendNotification() {
 
+        //Task 3
+        Intent updateIntent = new Intent(ACTION_UPDATE_NOTIFICATION);
+        PendingIntent updatePendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, updateIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        //Task 2
         NotificationCompat.Builder builder = getNotificationBuilder();
+
+        //Task 3
+        builder.addAction(R.drawable.ic_update, "Update Notification", updatePendingIntent);
+
         mNotifyManager.notify(NOTIFICATION_ID, builder.build());
-        setNotificationButtonState(false,true, true);
+        setNotificationButtonState(false, true, true);
+
     }
 
     //Each notification channel represents a type of notification.
@@ -72,51 +103,51 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private NotificationCompat.Builder getNotificationBuilder(){
+    private NotificationCompat.Builder getNotificationBuilder() {
 
         //Notification Intent to open up this app if it is close.
         Intent notificationIntent = new Intent(this, MainActivity.class);
 
 
-       //PendingIntent will execute the notificationIntent code
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this,NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //PendingIntent will execute the notificationIntent code
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID);
         notifyBuilder.setContentTitle("You've been notified!");
         notifyBuilder.setContentText("This is your notification text.");
         notifyBuilder.setSmallIcon(R.drawable.ic_android);
-                                                                    //Cancel the notification when the users clicks on it
+        //Cancel the notification when the users clicks on it
         notifyBuilder.setContentIntent(notificationPendingIntent).setAutoCancel(true);
 
 
-            //1.5 Add priority and defaults to your notification for backward compatibility
-            // require fro Android 7.1 and lower
-            notifyBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
-            notifyBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
+        //1.5 Add priority and defaults to your notification for backward compatibility
+        // require fro Android 7.1 and lower
+        notifyBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        notifyBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
 
         return notifyBuilder;
     }
 
     //Task 2 Update or cancel the notification
     //Update the notification with a picture
-    public void updateNotification(){
+    public void updateNotification() {
         Bitmap androidImage = BitmapFactory.decodeResource(getResources(), R.drawable.mascot_1);
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
         notifyBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(androidImage).setBigContentTitle("Notification Updated!"));
         mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
-        setNotificationButtonState(false, false,true);
+        setNotificationButtonState(false, false, true);
     }
+
     //Cancel the notification
-    public void cancelNotification(int NotificationID){
+    public void cancelNotification(int NotificationID) {
 
         mNotifyManager.cancel(NotificationID);
         setNotificationButtonState(true, false, false);
     }
 
     //Toggle the buttons: update, cancel, Notify
-    void setNotificationButtonState(Boolean isNotifyEnabled, Boolean isUpdateEnabled, Boolean isCancelEnabled)
-    {
+    void setNotificationButtonState(Boolean isNotifyEnabled, Boolean isUpdateEnabled, Boolean isCancelEnabled) {
         button_notify.setEnabled(isNotifyEnabled);
         button_update.setEnabled(isUpdateEnabled);
         button_cancel.setEnabled(isCancelEnabled);
@@ -124,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -139,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
 
         button_cancel = findViewById(R.id.cancel);
-        button_cancel.setOnClickListener(new View.OnClickListener(){
+        button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Cancel notification
@@ -156,7 +187,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-            setNotificationButtonState(true, false, false);
+        setNotificationButtonState(true, false, false);
+
+        //Task 3
+       // However, using a PendingIntent delegates the responsibility of delivering the notification to the Android framework.
+                registerReceiver(mReceiver, new IntentFilter(ACTION_UPDATE_NOTIFICATION));
+
+
     }
 
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
+    }
 }
