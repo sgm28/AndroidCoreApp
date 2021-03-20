@@ -163,7 +163,23 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
         //Using expanded layout by using the setStyle method.
         //The other view is the normal view
-        notifyBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(androidImage).setBigContentTitle("Notification Updated!"));
+
+        //Comment this line out because of the homework
+        //notifyBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(androidImage).setBigContentTitle("Notification Updated!"));
+
+
+       //Homework set notification  to use the inbox style
+        notifyBuilder.setStyle(new NotificationCompat.InboxStyle()
+        .addLine("Here is the first one")
+                .addLine("This is the second one")
+                .addLine("Yay this is the last one"));
+
+
+
+
+
+
+
         //Delivers the notification
         mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
         setNotificationButtonState(false, false, true);
