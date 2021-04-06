@@ -48,7 +48,24 @@ public class BlurViewModel extends AndroidViewModel {
      */
     void applyBlur(int blurLevel) {
 
-        mWorkManger.enqueue(OneTimeWorkRequest.from(BlurWorker.class));
+       // mWorkManger.enqueue(OneTimeWorkRequest.from(BlurWorker.class));
+
+        /*
+
+        Step 2 - Pass the Data object to WorkRequest
+        You're going to want to change the applyBlur method so that it:
+
+        Creates a new OneTimeWorkRequest.Builder.
+        Calls setInputData, passing in the result from createInputDataForUri.
+        Builds the OneTimeWorkRequest.
+        Enqueues that request using WorkManager.
+
+         */
+
+        OneTimeWorkRequest blurRequest = new OneTimeWorkRequest.Builder(BlurWorker.class).
+        setInputData(createInputDataForUri())
+        .build();
+        mWorkManger.enqueue(blurRequest);
 
 
     }
