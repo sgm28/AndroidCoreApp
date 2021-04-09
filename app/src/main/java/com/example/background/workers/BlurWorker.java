@@ -37,6 +37,10 @@ public class BlurWorker extends Worker {
 
         Context applicationContext = getApplicationContext();
 
+        // Makes a notification when the work start and slows down the work so that it's easier to
+        // see each WorkRequest start, even on emulated devices
+        WorkerUtils.makeStatusNotification("Blurring image", applicationContext);
+        WorkerUtils.sleep();
         String resourceUri = getInputData().getString(Constants.KEY_IMAGE_URI);
 
         try {
@@ -61,19 +65,21 @@ public class BlurWorker extends Worker {
             // Blur the bitmap
             Bitmap output = WorkerUtils.blurBitmap(picture, applicationContext);
 
+            // Write bitmap to a temp file
             Uri outputUri = WorkerUtils.writeBitmapToFile(applicationContext, output);
 
-            WorkerUtils.makeStatusNotification("Ouput is " + outputUri.toString(), applicationContext);
-
-            Data outputData  = new Data.Builder()
+             Data outputData  = new Data.Builder()
                     .putString(KEY_IMAGE_URI, outputUri.toString())
                     .build();
 
 
-
+            // IF there were no errors, return SUCCESS
             return Result.success(outputData);
         } catch (Throwable throwable)
         {
+            // Technically WorkManager will return Result.failure()
+            // but it's best to be explict about it.
+            // Thus if there were errors, we're return FAILURE
             Log.e(TAG, "Error applying blur", throwable);
             return Result.failure();
         }

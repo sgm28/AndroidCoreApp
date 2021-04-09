@@ -20,13 +20,17 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkContinuation;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import android.app.Application;
 import android.net.Uri;
 import android.text.TextUtils;
 
 import com.example.background.workers.BlurWorker;
+import com.example.background.workers.CleanupWorker;
+import com.example.background.workers.SaveImageToFileWorker;
 
 public class BlurViewModel extends AndroidViewModel {
 
@@ -62,13 +66,40 @@ public class BlurViewModel extends AndroidViewModel {
 
          */
 
-        OneTimeWorkRequest blurRequest = new OneTimeWorkRequest.Builder(BlurWorker.class).
-        setInputData(createInputDataForUri())
-        .build();
-        mWorkManger.enqueue(blurRequest);
+
+
+        // Add WorkRequest to Cleanup temporary images
+        WorkContinuation continuation = mWorkManger.beginWith(OneTimeWorkRequest.from(CleanupWorker.class));
+
+        // Add WorkReuests to blur the image the number of times requested
+        for (int i = 0; i < blurLevel; i++)
+        {
+            OneTimeWorkRequest.Builder blurBuilder = new OneTimeWorkRequest.Builder(BlurWorker.class);
+
+            // Input the Uri if this is the first blur operation
+            // After the first blur operation the input will be th output of
+            // previous blur operations.
+
+            if ( i == 0) {
+                blurBuilder.setInputData(createInputDataForUri());
+            }
+            continuation = continuation.then(blurBuilder.build());
+
+        }
+
+            // Add WorkRequest to save the image to the filesystem
+            OneTimeWorkRequest save = new OneTimeWorkRequest.Builder(SaveImageToFileWorker.class)
+                    .build();
+
+            continuation = continuation.then(save);
+
+            // Actually start the work
+            continuation.enqueue();
 
 
     }
+
+
 
     private Uri uriOrNull(String uriString) {
         if (!TextUtils.isEmpty(uriString)) {
