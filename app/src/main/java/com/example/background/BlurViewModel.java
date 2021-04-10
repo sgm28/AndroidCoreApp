@@ -19,6 +19,7 @@ package com.example.background;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkContinuation;
 import androidx.work.WorkManager;
@@ -31,6 +32,8 @@ import android.text.TextUtils;
 import com.example.background.workers.BlurWorker;
 import com.example.background.workers.CleanupWorker;
 import com.example.background.workers.SaveImageToFileWorker;
+
+import static com.example.background.Constants.IMAGE_MANIPULATION_WORK_NAME;
 
 public class BlurViewModel extends AndroidViewModel {
 
@@ -69,9 +72,10 @@ public class BlurViewModel extends AndroidViewModel {
 
 
         // Add WorkRequest to Cleanup temporary images
-        WorkContinuation continuation = mWorkManger.beginWith(OneTimeWorkRequest.from(CleanupWorker.class));
+        // Blur-O-Matic blur one picture at a time now
+        WorkContinuation continuation = mWorkManger.beginUniqueWork(IMAGE_MANIPULATION_WORK_NAME, ExistingWorkPolicy.REPLACE, OneTimeWorkRequest.from(CleanupWorker.class));
 
-        // Add WorkReuests to blur the image the number of times requested
+        // Add WorkRequests to blur the image the number of times requested
         for (int i = 0; i < blurLevel; i++)
         {
             OneTimeWorkRequest.Builder blurBuilder = new OneTimeWorkRequest.Builder(BlurWorker.class);
