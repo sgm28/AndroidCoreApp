@@ -47,7 +47,15 @@ public class BlurViewModel extends AndroidViewModel {
     //Variable
     LiveData<List<WorkInfo>> mSavedWorkInfo;
 
+    // New instance variable for the WorkInfo
+    private Uri mOutputUri;
 
+    // Add a getter and setter for mOutputUri
+    void setOutputUri(String outputImageUri)
+    {
+        mOutputUri = uriOrNull(outputImageUri);
+    }
+    Uri getOutputUri() { return mOutputUri; }
 
 
 
